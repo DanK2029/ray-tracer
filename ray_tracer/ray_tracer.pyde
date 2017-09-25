@@ -1,7 +1,3 @@
-# This is the starter code for the CS 3451 Ray Tracing project.
-#
-# The most important part of this code is the interpreter, which will
-# help you parse the scene description (.cli) files.
 from scene_components import *
 
 sphere_list = []
@@ -131,20 +127,16 @@ def render_scene():
             ray = Ray(cx,cy,cz, d[0], d[1], d[2])
             
             L = cast_ray(ray, i, j, 100)
-            #L = hit.getL()
             Cr = L[0]
             Cg = L[1]
             Cb = L[2]
-            #println(L)
-            #println([i,j])
             pix_color = color(Cr, Cg, Cb)  # you should calculate the correct pixel color here
             set (i, j, pix_color)         # fill the pixel with the calculated color
-    #set (410, 330, color(255, 0, 0))
     reset()
     println("Done")
     pass
     
-    
+# resets the all global lists for other scenes
 def reset():
     global light_list, sphere_list, vertex_list, b1, b2, b3, triangle_list
     sphere_list = []
@@ -176,7 +168,6 @@ def add_light(x, y, z, r, g, b):
     
 def cast_ray(ray, i, j, maxDepth):
     global  b1, b2, b3
-    
     L = [b1, b2, b3]
     if(maxDepth == 0):
         return L
@@ -288,7 +279,6 @@ def cast_ray(ray, i, j, maxDepth):
 
             L = vec_add(Ka, multiple_light_sum)
             return L
-        
     return L
     
 
@@ -321,21 +311,17 @@ def ray_intersect_scene(ray, i, j, sh):
         if(disc > 0):
             t1 = (-b + sqrt(sq(b)-(4*a*c)))/(2*a)
             t2 = (-b - sqrt(sq(b)-(4*a*c)))/(2*a)
-            #if(i==410 and j==330 and sh==1):
-                 #println("t1: " + str(t1))
-                 #println("t2: " + str(t2))
+            
             if(t1 >= 0 and t2 >= 0):
-                #objID = k
                 t = min(t1, t2)
+                
             elif(t1 >= 0 and t2 < 0):
-                #objID = k
                 t = t1
+                
             elif(t1 < 0 and t2 >= 0):
-                #objID = k
                 t = t2
                 
         elif(disc == 0):
-            #objID = k
             t = -b / (2*a)
             type = 0
             
@@ -368,23 +354,11 @@ def cast_shadow_ray(ray_origin, light_origin, i, j):
     shadow_ray = Ray(ray_origin[0], ray_origin[1], ray_origin[2],  shadow_vec_dir[0], shadow_vec_dir[1], shadow_vec_dir[2])
     hit_object = ray_intersect_scene(shadow_ray, i, j, 1)
     
-    #if(i==410 and j==330):
-        #println("Shadow Ray 410x330")
-        #println(str(ray_origin)+str(shadow_vec_dir))
-        #println(light_origin)
-        #println(str(hit_object[0]) + "  " + str(shadow_vec_length))
-        #println(hit_object[0] >= shadow_vec_length)
-        #println("")
     
     if(hit_object[0] == float("inf") or hit_object[0] >= shadow_vec_length):
-        #if(i==410 and j==330):
-            #println("1")
         return 1
-    #if(hit_object[0] > -0.00001 and hit_object[0] < 0.00001):
-        #return 1
+
     else:
-        #if(i==410 and j==330):
-            #println("0")
         return 0
     
 
@@ -425,7 +399,6 @@ def vec_const_mult(v, c):
     return [v[0]*c, v[1]*c, v[2]*c]
 
 def vec_add(v1, v2):
-    #return [(float(v1[0]) + float(v2[0])), (float(v1[1]) + float(v2[1])), (float(v1[2]) + float(v2[2]))]
     return [(v1[0] + v2[0]), (v1[1] + v2[1]), (v1[2] + v2[2])]
 
 def vec_sub(v1, v2):
@@ -437,6 +410,6 @@ def vec_div(v1, v2):
     return [(v1[0]/v2[0]), (v1[1]/v2[1]), (v1[2]/v2[2])]
 
     
-# should remain empty for this assignment
+# should remain empty
 def draw():
     pass
